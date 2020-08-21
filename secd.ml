@@ -172,16 +172,24 @@ let rec stkmc s e c d =
 
 (* add test cases *)
 
+let run p env = stkmc [] env (compile p) [];;
+
 let cur_env = [("x", Integer 3); ("y", Integer 5); ("z", Boolean true)];;
 
-let run l = stkmc [] cur_env l [];;
+let p1 = Add(Int(1), Int(2));;
+let p2 = If(Gt(Int(1)), Int(1), Int(2));;
+let p3 = If(Gt(Int(0)), Int(1), Int(2));;
+let p4 = Appl(Abst("x", Add(Var "x", (Mul(If(Gt(Var "x"), Int 16, Int (-1)), Var "x")))), Int 3);;
+let p5 = Appl(Abst("x", Add(Var "x", (Mul(If(Gt(Var "x"), Int 16, Int (-1)), Var "x")))), Int (-3));;
+let p6 = Abst("x", Add(Var "x", Int 7));;
+let p7 = Appl(Abst("x", Add(Var "x", Int 4)), Appl(Abst("x", Add(Var "x", Int 4)), Appl(Abst("x", Add(Var "x", Int 4)), Appl(Abst("x", Add(Var "x", Int 4)), Appl(Abst("x", Add(Var "x", Int 4)), Int 1)))));;
 
-let p1 = Appl(Abst("x", Add(Var "x", Int 7)), Int 3);;
-run (compile p1);;
+run p1 cur_env;;
+run p2 cur_env;;
+run p3 cur_env;;
+run p4 cur_env;;
+run p5 cur_env;;
+run p7 cur_env;;
+run p6 cur_env;;
 
-let p2 = Appl(Abst("x", Add(Var "x", (Mul(Int 10, Var "x")))), Int 3);;
-run (compile p2);;
-
-let p3 = Appl(Abst("x", Add(Var "x", (Mul(If(Bool true, Int 10, Int 15), Var "x")))), Int 3);;
-run (compile p3);;
 
