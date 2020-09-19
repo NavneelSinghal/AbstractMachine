@@ -59,7 +59,7 @@ let rec eval c s =
     | (Closure (Appl(e1, e2), env)) -> eval (Closure(e1, env)) ((Closure(e2, env)) :: s)
     
     (* boolean value *)
-    | (Closure (Bool b, env)) -> c
+    | (Closure (Bool b, env)) -> Closure (Bool b, [])
     
     (* conditional *)
     | (Closure (If(e1, e2, e3), env)) ->
@@ -70,7 +70,7 @@ let rec eval c s =
             end
     
     (* integer value *)
-    | (Closure (Int a, env)) -> c
+    | (Closure (Int a, env)) -> Closure (Int a, [])
 
     (* add *)
     | (Closure (Add(e1, e2), env)) ->
@@ -148,6 +148,10 @@ let p4 = Appl(Abst("x", Add(Var "x", (Mul(If(Gt(Var "x"), Int 16, Int (-1)), Var
 let p5 = Appl(Abst("x", Add(Var "x", (Mul(If(Gt(Var "x"), Int 16, Int (-1)), Var "x")))), Int (-3));;
 let p6 = Abst("x", Add(Var "x", Int 7));;
 let p7 = Appl(Abst("x", Add(Var "x", Int 4)), Appl(Abst("x", Add(Var "x", Int 4)), Appl(Abst("x", Add(Var "x", Int 4)), Appl(Abst("x", Add(Var "x", Int 4)), Appl(Abst("x", Add(Var "x", Int 4)), Int 1)))));;
+
+let t12 = Appl(Abst("x", Int 3), Add(Int 1, Int 0));;
+
+run t12 [];;
 
 run p1 cur_env;;
 run p2 cur_env;;
